@@ -51,28 +51,16 @@ Game ini dirancang menggunakan pendekatan **Object Oriented Programming** agar s
 ---
 
 ## 🗂️ Struktur Project
-forest-survivors/
-├── main.py
-├── README.md
-├── requirements.txt
+FOREST-SURVIVORS/
 ├── assets/
 │   ├── audio/
 │   ├── enemy/
 │   ├── font/
 │   ├── food/
 │   ├── maps/
-│   │   └── mainMap.tmx
-│   └── tilesets/
-│       ├── TX Plant.tsx
-│       ├── TX Props.tsx
-│       ├── TX Shadow Plant.tsx
-│       ├── TX Shadow.tsx
-│       ├── TX Struct.tsx
-│       ├── TX Tileset Grass.tsx
-│       ├── TX Tileset Stone Ground.tsx
-│       └── TX Tileset Wall.tsx
-├── player/
-├── ui/
+│   ├── player/
+│   ├── tilesets/
+│   └── ui/
 ├── core/
 │   ├── camera.py
 │   ├── game.py
@@ -88,9 +76,14 @@ forest-survivors/
 │   ├── skeleton.py
 │   ├── slime.py
 │   └── thrown_bomb.py
-└── world/
-  ├── __init__.py
-  └── map_loader.py
+├── world/
+│   ├── __init__.py
+│   └── map_loader.py
+├── bomb.png
+├── explosion.png
+├── main.py
+├── requirements.txt
+└── README.md
 
 ---
 
