@@ -51,6 +51,7 @@ Game ini dirancang menggunakan pendekatan **Object Oriented Programming** agar s
 ---
 
 ## 🗂️ Struktur Project
+```text
 FOREST-SURVIVORS/
 ├── assets/
 │   ├── audio/
