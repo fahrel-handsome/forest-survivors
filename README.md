@@ -1,165 +1,82 @@
-# Forest Survivors — README
+# 🎮 Forest Survivors
+Top-Down Action RPG Game using Python & Pygame
 
-Deskripsi
+Forest Survivors adalah game 2D **Top-Down Action RPG** yang dikembangkan menggunakan **Python** dan **Pygame**. Game ini dibuat sebagai project pembelajaran untuk menerapkan konsep **Object Oriented Programming (OOP)** dalam pengembangan game interaktif.
 
-Forest Survivors adalah game 2D top-down sederhana yang dibuat dengan Python dan Pygame untuk tugas akhir. Dokumentasi ini dibuat supaya teman-teman bisa cepat menjalankan game, memahami struktur proyek, dan tahu di mana mencari logika utama.
+---
 
-Persyaratan
+## 🕹️ Gameplay Overview
+Pemain mengendalikan karakter utama dari sudut pandang atas (top-down) dan harus bertahan hidup dari serangan musuh yang terus muncul di arena permainan. Pemain dapat bergerak, menyerang musuh menggunakan pedang, melempar bom, serta mengambil item makanan untuk memulihkan HP.
 
-- Python 3.8 atau lebih baru
-- pygame
+---
 
-Instalasi
+## 🎯 Fitur Utama
+- Top-down movement (W, A, S, D)
+- Serangan pedang (melee attack)
+- Serangan bom (area damage)
+- Dua tipe monster dengan perilaku berbeda
+- Musuh spawn secara berkala
+- Sistem HP (3 nyawa)
+- Item pemulihan HP (ayam goreng dan semangka)
+- Sistem score
+- UI sederhana (HP dan score)
 
-1. (Opsional) Buat virtual environment:
+---
 
-```bash
-python -m venv venv
-venv\Scripts\activate
-```
+## ⌨️ Kontrol Game
+| Tombol | Fungsi |
+|------|------|
+| W, A, S, D | Menggerakkan player |
+| Space | Serangan pedang |
+| E | Melempar bom |
 
-2. Instal dependensi:
+---
 
-```bash
-pip install -r requirements.txt
-```
+## 🧠 Object Oriented Programming (OOP)
+Game ini dirancang menggunakan pendekatan **Object Oriented Programming** agar struktur kode lebih rapi dan mudah dikembangkan.
 
-Menjalankan game
+- **Encapsulation**  
+  Setiap entitas game seperti player, enemy, item, dan UI dibungkus dalam class masing-masing yang menyimpan data dan method terkait.
 
-Jalankan perintah ini di folder proyek:
+- **Inheritance**  
+  Digunakan untuk membuat beberapa tipe monster dari satu class dasar sehingga mengurangi duplikasi kode.
 
-```bash
-python main.py
-```
+- **Polymorphism**  
+  Method seperti `update()` dan `draw()` digunakan oleh berbagai objek game dengan perilaku yang berbeda sesuai class masing-masing.
 
-Kontrol dasar
+- **List / Collection**  
+  Struktur data list digunakan untuk mengelola banyak objek game seperti musuh, bom, dan item secara dinamis di dalam game loop.
 
-- WASD / Panah: bergerak
-- Spasi: aksi/serang (tergantung implementasi)
+---
 
-Struktur proyek (singkat)
+## 🗂️ Struktur Project
+Forest-Survivors/
+│
+├── assets/
+│ ├── audio/ # Sound effect dan audio game
+│ ├── enemy/ # Asset sprite musuh
+│ ├── font/ # Font game
+│ ├── food/ # Asset item makanan (HP recovery)
+│ ├── maps/ # Map dan tilemap
+│ ├── player/ # Sprite player
+│ ├── tilesets/ # Tileset lingkungan
+│ └── ui/ # Asset UI (HP, icon, dll)
+│
+├── core/ # Game loop dan logika utama
+├── entities/ # Class player, enemy, item, bomb
+├── world/ # Pengelolaan map dan dunia game
+│
+└── pycache/ # Cache Python
 
-- `main.py`: titik masuk, inisialisasi Pygame dan loop utama.
-- `core/game.py`: logika game, loop update/draw, manajemen grup sprite.
-- `core/settings.py`: pengaturan seperti resolusi, FPS, ukuran tile.
-- `core/camera.py`: menghitung offset kamera untuk rendering.
-- `core/spritesheet_loader.py`: utilitas memotong sprite sheet menjadi frame animasi.
-- `world/map_loader.py`: memuat file `.tmx` (Tiled), mengolah layer, spawn, dan collision.
-- `entities/`: berisi entitas game (pemain, musuh, item, bom, dll.).
-- `assets/`: sprites, tilesets, peta, suara, font.
 
-Penjelasan singkat per modul
 
-1. `main.py`
-- Membuat objek `Game` (dari `core/game.py`) dan menjalankan loop utama.
+---
 
-2. `core/game.py`
-- Mengatur event handling, update semua entitas, dan rendering.
-- Mengelola grup sprite dan urutan gambar agar draw berjalan benar.
-
-3. `core/settings.py`
-- Menyimpan konstanta agar mudah dikonfigurasi.
-
-4. `core/camera.py`
-- Menyimpan offset berdasarkan posisi pemain sehingga tampilan mengikuti pemain.
-
-5. `core/spritesheet_loader.py`
-- Berisi fungsi untuk memotong sprite sheet dan mengambil frame animasi.
-
-6. `world/map_loader.py`
-- Memuat peta Tiled (`.tmx`), membaca objek spawn dan layer collision, lalu menyiapkan data untuk game.
-
-7. `entities/*`
-- Setiap file entitas biasanya turunan `pygame.sprite.Sprite` yang punya `update()` dan `rect`.
-
-Penjelasan lebih detail: `entities/player.py`
-
-- Kelas utama: `Player(pygame.sprite.Sprite)` — mengurus input, pergerakan, animasi, dan deteksi tabrakan.
-- Inisialisasi: memuat frame animasi, mengatur `rect`, kecepatan, dan status seperti health.
-- Metode penting: `handle_input()` untuk membaca keyboard, `move()` atau langsung ubah `rect` untuk berpindah, `update()` untuk menggabungkan input, gerak, dan animasi, serta fungsi collision tile.
-
-Contoh pola sederhana:
-
-```py
-class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, spritesheet):
-        super().__init__(groups)
-        self.image = spritesheet.get_image(0,0,32,32)
-        self.rect = self.image.get_rect(topleft=pos)
-        self.vx, self.vy = 0, 0
-        self.speed = 200
-
-    def handle_input(self):
-        keys = pygame.key.get_pressed()
-        self.vx = keys[pygame.K_d] - keys[pygame.K_a]
-        self.vy = keys[pygame.K_s] - keys[pygame.K_w]
-
-    def update(self, dt):
-        self.handle_input()
-        self.rect.x += self.vx * self.speed * dt
-        self.rect.y += self.vy * self.speed * dt
-        self.animate()
-```
-
-Tips singkat
-
-- Gunakan `dt` (delta time) agar kecepatan gerak konsisten di semua frame rate.
-- Pisahkan logika input, gerak, dan animasi supaya kode lebih rapi.
-- Gunakan `rect`/`mask` untuk deteksi tabrakan.
-
-Panduan cepat buat belajar kode
-
-- Buka `main.py` dulu, lalu telusuri ke `core/game.py` untuk memahami loop utama.
-- Lanjut ke `world/map_loader.py` untuk lihat bagaimana peta dan spawn dimuat.
-- Untuk logika karakter, lihat `entities/player.py`.
-
-Debugging umum
-
-- Jika kamera tidak mengikuti pemain, cek posisi pemain dan offset kamera.
-- Kalau sprite tidak muncul, cek path file di `assets/` dan pemotongan frame di `spritesheet_loader`.
-- Periksa layer collision di `.tmx` bila pemain bisa melewati area yang seharusnya terblokir.
-
-Opsi pengembangan
-
-- Tambah musuh atau item baru dengan menambah file di `entities/` dan menandai spawn di editor peta.
-- Tambah screenshot atau dokumentasi fungsi tertentu bila perlu.
-
-Kontribusi
-
-- Buat branch terpisah untuk fitur/bugfix dan tambahkan catatan singkat di commit.
-
-Lisensi
-
-Proyek ini dibuat untuk tugas/pembelajaran. Tambahkan lisensi jika ingin dipublikasikan.
-
-**Penjelasan detail: `entities/player.py`**
-
-- **Kelas utama:** `Player(pygame.sprite.Sprite)` — menangani input, gerak, animasi, dan collision.
-- **Inisialisasi:** memuat image/animasi, mengatur `rect`, kecepatan, health, state.
-- **Metode penting:** `handle_input()` memproses keyboard; `move(dx, dy)` mengubah posisi; `update()` menyatukan input->gerak->animasi; `check_collisions()` untuk tile collisions.
-- **Contoh pola kode (singkat):**
-
-```py
-class Player(pygame.sprite.Sprite):
-  def __init__(self, pos, groups, spritesheet):
-    super().__init__(groups)
-    self.image = spritesheet.get_image(0,0,32,32)
-    self.rect = self.image.get_rect(topleft=pos)
-    self.vx, self.vy = 0, 0
-    self.speed = 200
-
-  def handle_input(self):
-    keys = pygame.key.get_pressed()
-    self.vx = keys[pygame.K_d] - keys[pygame.K_a]
-    self.vy = keys[pygame.K_s] - keys[pygame.K_w]
-
-  def update(self, dt):
-    self.handle_input()
-    self.rect.x += self.vx * self.speed * dt
-    self.rect.y += self.vy * self.speed * dt
-    self.animate()
-```
-
-- **Tips implementasi:** gunakan `dt` (delta time) untuk gerak frame-rate independent; gunakan mask/rect untuk collision; simpan state (`'idle'`, `'walk'`, `'attack'`) untuk memilih animasi.
-
-Jika ingin, saya bisa membuat penjelasan serupa untuk `entities/slime.py` atau menambahkan `requirements.txt` sekarang.
+## ▶️ Cara Menjalankan Game
+1. Pastikan Python sudah terinstall
+2. Install Pygame:
+   ```bash
+   pip install pygame
+3. Jalankan game nya:
+   ```bash
+   python main.py
