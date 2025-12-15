@@ -122,3 +122,35 @@ Jika mau, saya bisa:
 - Membuat `requirements.txt` otomatis berisi `pygame`.
 
 Beritahu saya opsi mana yang Anda inginkan selanjutnya.
+
+**Penjelasan detail: `entities/player.py`**
+
+- **Kelas utama:** `Player(pygame.sprite.Sprite)` — menangani input, gerak, animasi, dan collision.
+- **Inisialisasi:** memuat image/animasi, mengatur `rect`, kecepatan, health, state.
+- **Metode penting:** `handle_input()` memproses keyboard; `move(dx, dy)` mengubah posisi; `update()` menyatukan input->gerak->animasi; `check_collisions()` untuk tile collisions.
+- **Contoh pola kode (singkat):**
+
+```py
+class Player(pygame.sprite.Sprite):
+  def __init__(self, pos, groups, spritesheet):
+    super().__init__(groups)
+    self.image = spritesheet.get_image(0,0,32,32)
+    self.rect = self.image.get_rect(topleft=pos)
+    self.vx, self.vy = 0, 0
+    self.speed = 200
+
+  def handle_input(self):
+    keys = pygame.key.get_pressed()
+    self.vx = keys[pygame.K_d] - keys[pygame.K_a]
+    self.vy = keys[pygame.K_s] - keys[pygame.K_w]
+
+  def update(self, dt):
+    self.handle_input()
+    self.rect.x += self.vx * self.speed * dt
+    self.rect.y += self.vy * self.speed * dt
+    self.animate()
+```
+
+- **Tips implementasi:** gunakan `dt` (delta time) untuk gerak frame-rate independent; gunakan mask/rect untuk collision; simpan state (`'idle'`, `'walk'`, `'attack'`) untuk memilih animasi.
+
+Jika ingin, saya bisa membuat penjelasan serupa untuk `entities/slime.py` atau menambahkan `requirements.txt` sekarang.
